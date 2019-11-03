@@ -36,7 +36,6 @@ function resetForm(){
 
 document.getElementById('button-calculate').addEventListener('click', calc);
 
-
 //Button pressed
 function calc(){
     //setting distance based on presets and custom dist
@@ -47,46 +46,80 @@ function calc(){
         console.log("Empty preset:", distance)
     }
     else if(customDist.value == null || customDist.value === ''){
-        distance = presetDist.value;
+        distance = parseFloat(presetDist.value);
         console.log("preset:", distance)
     }
     else{
-        distance = customDist.value;
+        distance = parseFloat(customDist.value);
         console.log("CustDist: ", distance)
     }
     console.log("FINAL DIST: ", distance);
-
-    console.log(paceSec);
-
+ 
+    // GET PACE
+    if(paceMin.value == ""){
+        paceMin.value = 0;
+    }
+    if(paceSec.value == ""){
+        paceSec.value = 0;
+    }
     console.log("PaceMin: ", paceMin, "PaceSec: ", paceSec);
     var paceInSeconds = ((parseInt(paceMin.value) * 60) + parseInt(paceSec.value)); //sec/mile
     console.log("PaceSec:", paceInSeconds, "seconds per mile");
-    
 
+    // GET DURATION
+    if(durHour.value == ""){
+        durHour.value = 0;
+    }
+    if(durMin.value == ""){
+        durMin.value = 0;
+    }
+    if(durSec.value == ""){
+        durSec.value = 0;
+    }
     console.log("Duration input:", durHour.value,":", durMin.value,":", durSec.value);
-    console.log("Dur In Sec",durToSec(parseInt(durHour.value), parseInt(durMin.value), parseInt(durSec.value)));
+    var durInSec = durToSec(parseInt(durHour.value), parseInt(durMin.value), parseInt(durSec.value))
+    console.log("Dur In Sec", durInSec);
 
+    // Checking which fields have values to decide what operation to perform
+    if(distance === 0 && durInSec != 0 && paceInSeconds != 0){
+        console.log("DISTANCE 0 CASE")
+        //calculate Distance based on Pace and Duration
+        customDist.value = calcDistance(durInSec, paceInSeconds);
+    }
+    else if(durInSec == 0 && paceInSeconds !=0 && distance != 0){
+        //Calculate total duration from pace and distance
+        console.log("Calculate total duration from pace and distance")
 
+        var totalSeconds = paceInSeconds * distance;
+        console.log("totSec:", totalSeconds);
+    
+        var eHour = Math.floor(totalSeconds / 3600); //can make a function
+        var eMin = Math.floor((totalSeconds % 3600) / 60);
+        var eSec = Math.floor(totalSeconds % 60);
+        console.log("Expected Duration: ", eHour, ":", eMin, ":", eSec )
+        //sets the hr:mn:sec of duration in HTML
+        setDuration(totalSeconds);
+    }
+    else if(paceInSeconds == 0 && durInSec != 0 && distance != 0){
+        //Calculate pace from distance and duration
+        console.log("Calculate pace from distance and duration")
+        durToPace(durInSec, distance);
+    }
+    else{
+        console.log("ELSE CASE ERROR: NOT ENOUGH INFO")
+        document.getElementById("error").innerHTML = "ERROR: NOT ENOUGH INFO";
+    }
+}//End calc
 
-    var totalSeconds = paceInSeconds * distance;
-    console.log("totSec:", totalSeconds);
+function durToPace(duration, distance){
+    var perMile = duration / distance;
+    paceMin.value = Math.floor((perMile % 3600) / 60) ;
+    paceSec.value = Math.floor(perMile % 60);
+}
 
-    var eHour = Math.floor(totalSeconds / 3600); //expected hour finish - refactor
-    var eMin = Math.floor((totalSeconds % 3600) / 60);
-    var eSec = Math.floor(totalSeconds % 60);
-    console.log("Expected Duration: ", eHour, ":", eMin, ":", eSec )
-
-
-
-    //sets the hr:mn:sec of duration in HTML
-    setDuration(totalSeconds);
-
-    var hr = parseInt(durHour.value);
-    var mn = parseInt(durMin.value);
-    var sc = parseInt(durSec.value);
-
-    //durToPace(durToSec(durHour.value, durMin.value, durSec.value), distance);
-
+function calcDistance(duration, pace){
+    console.log( "DISTANCE: " , duration/pace , "Miles") ;
+    return duration/pace;
 }
 
 function kiloToMile(kilometers){
@@ -97,26 +130,14 @@ function mileToKilo(miles){
     return miles / 0.621371;
 }
 
-
 function setDuration(seconds){
     durHour.value = Math.floor(seconds / 3600);
     durMin.value = Math.floor((seconds % 3600) / 60);
     durSec.value = Math.floor(seconds % 60);
 }
 
-//dur in sec doesnt work yet
-function durToPace(duration, distance){
-    var perMile = duration / distance;
-
-    paceMin.value = Math.floor((perMile % 3600) / 60) ;
-    paceSec.value = Math.floor(perMile % 60);
-
-}
-
 function durToSec(hour, minutes, seconds){
-
     var totalSeconds = (hour * 3600) + (minutes * 60) + seconds;
-
     return totalSeconds;
 }
 
@@ -137,34 +158,3 @@ function minToSec(minutes){
     //console.log(seconds)
     return seconds;
 }
-
-/*
-form.addEventListener('submit', (e) => {
-
-    console.log('Duration', durHour.value, durMin.value, durSec.value);
-
-    let messages = []
-    if (durHour.value == null || durHour.value === ''){
-        messages.push('Hour is required')
-        durHour.value = 0;
-    }
-
-    if (durMin.value == null || durMin.value === ''){
-        messages.push('Min is required')
-        durMin.value = 0;
-    }
-
-    if (durSec.value == null || durSec.value === ''){
-        messages.push('Sec is required')
-        durSec.value = 0;
-    }
-
-    if (messages.length > 0){
-
-        e.preventDefault();
-        errorElement.innerText = messages.join(', ')
-    }else{
-        console.log("ELSE")
-    }
-    
-})*/
