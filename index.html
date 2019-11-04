@@ -5,104 +5,99 @@
 	<meta name="viewport" content="width=device.width, intitial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script defer src="js/script.js"></script>
-	<title>RacePaceCamelCase</title>
+	<title>RacePace</title>
 </head>
 <body class="body">
 	<header class="grid-1">
-		<h1>RacePace</h1>
+		<h1>Race Pace</h1>
 	</header>
 
 <div id="error"></div>	
 
 <div class="container">
-	
-<form id="calc-form" action="#" method="GET">
+		<form id="calc-form" class="calc-form"  action="#" method="GET">
 
-	<div class="form-fields">
-
-		<div class="duration">
-
-			<label class="top-label">Duration</label>
-
-			<div class="field-items">
-
-				<div class="field" data-errormsg="">
-					<input type="number" id="input-dur-hours" name="input-dur-hours" min="0" max="3073">
-					<label for="input-dur-hours">Hours</label>
+				<div class="form-fields">
+			
+					<label class="top-label">Duration</label>
+			
+						<div class="field-items">
+							<div class="field" data-errormsg="">
+								<input type="number" id="input-dur-hours" name="input-dur-hours" class="input" min="0" max="3073">
+								<label for="input-dur-hours" class="field-label">Hours</label>
+							</div>
+			
+							<div class="field" data-errormsg="">
+								<input type="number" id="input-dur-minutes" name="input-dur-minutes" class="input" min="0" max="59">
+								<label for="input-dur-minutes" class="field-label">Minutes</label>
+							</div>
+			
+							<div class="field" data-errormsg="">
+								<input type="number" id="input-dur-seconds" name="input-dur-seconds" class="input" min="0" max="59">
+								<label for="input-dur-seconds" class="field-label">Seconds</label>
+							</div>
+						</div>	
+			
+					<label class="top-label">Pace</label>
+						<div class="field-items">
+							<div class="field">
+								<input type="number" id="input-pace-min" class="input" min="0" max="59">
+								<label class="field-label" for="input-pace-min">Minutes</label>
+							</div>
+			
+							<div class="field">
+								<input type="number" id="input-pace-sec" class="input" min="0" max="59">
+								<label class="field-label" for="input-pace-sec">Seconds</label>
+							</div>
+			
+							<div class=field>
+							<select class="dropdown" id="pace-unit">
+								<option value="miles">per Mile</option>
+								<option value="kilometers">per Kilometer</option>
+							</select>
+							</div>
+						</div>
+			
+						<label class="top-label">Distance</label>
+							<div class="field-items">
+								<div class=field> 
+								<select class="dropdown" id="presetDists">
+									<option value="" selected disabled hidden>Choose</option>
+									<option value="5.0">5k</option>
+									<option value="10.0">10k</option>
+									<option value="15.0">15k</option>
+									<option value="21.0975">Half Marathon</option>
+									<option value="42.195">Marathon</option>
+								</select>
+								</div>
+				
+								<div class="field">
+									<input type="number" id="input-distance" class="input" min="0" max="24000">
+									<label for="input-distance" class="field-label">Custom</label>
+								</div>
+				
+								<div class=field>
+								<select class="dropdown" id="dis-unit">
+									<option value="miles">Miles</option>
+									<option value="kilometers">Kilometers</option>
+								</select>
+								</div>			
+							</div>	
+				
+				<div class= buttons>
+					<button type="button" id='button-calculate' class='button'>Calculate</button>
+					<input type="button"  id="button-reset" class='button' onclick="resetForm()" value="Reset" >
 				</div>
-
-				<div class="field" data-errormsg="">
-					<input type="number" id="input-dur-minutes" name="input-dur-minutes" min="0" max="59">
-					<label for="input-dur-minutes">Minutes</label>
-				</div>
-
-				<div class="field" data-errormsg="">
-					<input type="number" id="input-dur-seconds" name="input-dur-seconds" min="0" max="59">
-					<label for="input-dur-seconds">Seconds</label>
-				</div>
-			</div>	
-		</div>
-
-		<div class="pace">
-			<label class="top-label">Pace</label>
-			<div class="field-items">
-
-				<div class="field">
-					<input type="number" id="input-pace-min" min="0" max="59">
-					<label class="field-label" for="input-pace-min">minutes</label>
-				</div>
-
-				<div class="field">
-					<input type="number" id="input-pace-sec" min="0" max="59">
-					<label class="field-label" for="input-pace-sec">seconds</label>
-				</div>
-
-				<select class="unit" id="pace-unit">
-					<option value="miles">per Mile</option>
-					<option value="kilometers">per Kilometer</option>
-				</select>
-
+				
 			</div>
-		</div>	
-		
-		<div class="distance">
-			<label class="top-label">Distance</label>
-				<div class="field-items">
-	
-					<select class="dropdown" id="presetDists">
-						<option value="" selected disabled hidden>Choose here</option>
-						<option value="5.0">5k</option>
-						<option value="10.0">10k</option>
-						<option value="15.0">15k</option>
-						<option value="21.0975">Half Marathon</option>
-						<option value="42.195">Marathon</option>
-					</select>
-	
-					<div class="field">
-						<input type="number" id="input-distance" min="0" max="24000">
-						<label for="input-distance">Custom</label>
-					</div>
-	
-					<select class="unit" id="dis-unit">
-						<option value="miles">Miles</option>
-						<option value="kilometers">Kilometers</option>
-					</select>
+			
+			</form>
 
-					<button type="button" id='button-calculate'>Calculate</button>
-					<input type="button"  id="button-reset" onclick="resetForm()" value="Reset" >
-		</div>	
-	</div>
-
-	
 </div>
 
+
 	
 
-
-</form>
-
-
-</div> 
 
 </body>
 </html>

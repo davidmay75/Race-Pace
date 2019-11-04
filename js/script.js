@@ -24,6 +24,7 @@ document.getElementById('dis-unit').onchange = function(){
 //change custom dist to same as preset dist
 presetDist.onchange = function(){
     customDist.value = null;
+    //if miles then convert kiloToMile
 }
 //resets preset dropdown when custom dist input 
 customDist.oninput = function(){
