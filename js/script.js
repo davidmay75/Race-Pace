@@ -11,7 +11,7 @@ const presetDist = document.getElementById("presetDists");
 const customDist = document.getElementById("input-distance");
 
 const form = document.getElementById('calc-form');
-const errorElement = document.getElementById('error');
+const resultElement = document.getElementById('result');
 
 //changes the distance units when pace units change
 document.getElementById('pace-unit').onchange = function(){
@@ -33,6 +33,7 @@ customDist.oninput = function(){
 //reset form
 function resetForm(){
     document.getElementById('calc-form').reset();
+    resultElement.innerHTML = "";
 }
 
 document.getElementById('button-calculate').addEventListener('click', calc);
@@ -86,6 +87,7 @@ function calc(){
         console.log("DISTANCE 0 CASE")
         //calculate Distance based on Pace and Duration
         customDist.value = calcDistance(durInSec, paceInSeconds);
+        resultElement.innerHTML = ("Your distance is " + customDist.value + "UNITS")//update units
     }
     else if(durInSec == 0 && paceInSeconds !=0 && distance != 0){
         //Calculate total duration from pace and distance
@@ -100,15 +102,17 @@ function calc(){
         console.log("Expected Duration: ", eHour, ":", eMin, ":", eSec )
         //sets the hr:mn:sec of duration in HTML
         setDuration(totalSeconds);
+        resultElement.innerHTML = ("Your expected finish time is " + eHour + ":" + eMin + ":" + eSec)
     }
     else if(paceInSeconds == 0 && durInSec != 0 && distance != 0){
         //Calculate pace from distance and duration
         console.log("Calculate pace from distance and duration")
         durToPace(durInSec, distance);
+        resultElement.innerHTML = ("Your pace is " + Math.floor(((durInSec/distance) % 3600) / 60) + ":" + Math.floor((durInSec/distance) % 60))//add units and fix function
     }
     else{
         console.log("ELSE CASE ERROR: NOT ENOUGH INFO")
-        document.getElementById("error").innerHTML = "ERROR: NOT ENOUGH INFO";
+        document.getElementById("result").innerHTML = "ERROR: NOT ENOUGH INFO";
     }
 }//End calc
 
